@@ -1,2 +1,5 @@
 .vagrant
+.build/*iso
+.build/*deb
+.build/*gz
 *log
