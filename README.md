@@ -3,7 +3,13 @@ Vagrantfile to build a custom vyos
 
 ## clone
 
-## update
+## build
 ```
-git submodule update --init --recursive
+vagrant up
 ```
+
+## check assets
+```
+ls -al build/
+```
+
