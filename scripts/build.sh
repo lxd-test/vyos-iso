@@ -33,7 +33,7 @@ if [ $? -ne 0 ]; then
 
   patch /home/vagrant/vyos-build/packages/linux-kernel/x86_64_vyos_defconfig < /vagrant/config_btrfs.patch
   pushd /home/vagrant/vyos-build/packages/linux-kernel
-  bash -x ./build-kernel.sh
+  bash -x ./build-kernel.sh 2> /vagrant/logs/build-kernel.err | tee /vagrant/logs/make-deb-pkg.log
 
   cp linux-headers-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb linux-image-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb linux-libc-dev_${KERNEL}-1_amd64.deb linux-tools-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb /vagrant/build/
   # delete old iso if present
@@ -45,7 +45,7 @@ fi
 # check for iso
 if [ ! -f /home/vagrant/vyos-build/build/vyos-1.4-rolling-${KERNEL}-amd64.iso ] ; then
   pushd /home/vagrant/vyos-build
-  sudo make iso
+  sudo make iso 2> /vagrant/logs/make-iso.err | tee /vagrant/logs/make-iso.log
   cp -a /home/vagrant/vyos-build/build/live-image-amd64.hybrid.iso /home/vagrant/vyos-build/build/vyos-1.4-rolling-${KERNEL}-amd64.iso
   cp -a /home/vagrant/vyos-build/build/live-image-amd64.hybrid.iso /vagrant/build/vyos-1.4-rolling-${KERNEL}-amd64.iso
   popd
@@ -55,7 +55,7 @@ fi
 if [ ! -f /home/vagrant/vyos-build/packages/linux-kernel/linux-${KERNEL}-amd64-vyos_${KERNEL}.orig.tar.gz ]; then
   pushd /home/vagrant/vyos-build/packages/linux-kernel/linux/
   source ../kernel-vars
-  make deb-pkg BUILD_TOOLS=1 LOCALVERSION=${KERNEL_SUFFIX} KDEB_PKGVERSION=${KERNEL_VERSION}-1 -j $(getconf _NPROCESSORS_ONLN)
+  make deb-pkg BUILD_TOOLS=1 LOCALVERSION=${KERNEL_SUFFIX} KDEB_PKGVERSION=${KERNEL_VERSION}-1 -j $(getconf _NPROCESSORS_ONLN) 2> /vagrant/make-deb-pkg.err | tee /vagrant/make-deb-pkg.log
   cp /home/vagrant/vyos-build/packages/linux-kernel/linux-${KERNEL}-amd64-vyos_${KERNEL}.orig.tar.gz /vagrant/build/
 fi
 
