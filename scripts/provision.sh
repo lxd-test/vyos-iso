@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+exec 2>/vagrant/logs/provision.err
+
 export DEBIAN_FRONTEND=noninteractive
 
 # Standard shell should be bash not dash
