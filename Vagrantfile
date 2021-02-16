@@ -11,6 +11,6 @@ Vagrant.configure("2") do |config|
     v.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", "1000"]
   end
 
-  config.vm.provision "shell", path: "scripts/provision.sh", run: "once"
+  config.vm.provision "shell", path: "scripts/provision.sh"
   config.vm.provision "shell", path: "scripts/build.sh", privileged: false, run: "always"
 end
