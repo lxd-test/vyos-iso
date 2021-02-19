@@ -25,6 +25,13 @@ fi
 pushd /home/vagrant/vyos-build/packages/linux-kernel/
 ls linux-headers-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb linux-image-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb linux-libc-dev_${KERNEL}-1_amd64.deb linux-tools-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb
 if [ $? -ne 0 ]; then
+
+  # delete old kernel if present
+  rm -f /home/vagrant/vyos-build/packages/linux-kernel/linux-* || true
+
+  # we are building kernel, lets delete any left over iso
+  rm -f /home/vagrant/vyos-build/build/{live-image-amd64.*,*iso} || true
+
   pushd /home/vagrant/vyos-build/packages/linux-kernel/linux
 
   # change to kernel version tag defined in defaults.json
@@ -38,8 +45,6 @@ if [ $? -ne 0 ]; then
   bash -x ./build-kernel.sh
 
   cp linux-headers-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb linux-image-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb linux-libc-dev_${KERNEL}-1_amd64.deb linux-tools-${KERNEL}-amd64-vyos_${KERNEL}-1_amd64.deb /vagrant/build/
-  # delete old iso if present
-  [ -f /home/vagrant/vyos-build/build/live-image-amd64.hybrid.iso ] && rm -f /home/vagrant/vyos-build/build/live-image-amd64.hybrid.iso
 
   popd
 fi
@@ -47,6 +52,8 @@ fi
 # check for iso
 if [ ! -f /home/vagrant/vyos-build/build/vyos-1.4-rolling-${KERNEL}-amd64.iso ] ; then
   pushd /home/vagrant/vyos-build
+  # we building an iso, lets remove old images
+  rm -f build/{live-image-amd64.*,*iso} || true
   sudo make iso
   cp -a /home/vagrant/vyos-build/build/live-image-amd64.hybrid.iso /home/vagrant/vyos-build/build/vyos-1.4-rolling-${KERNEL}-amd64.iso
   cp -a /home/vagrant/vyos-build/build/live-image-amd64.hybrid.iso /vagrant/build/vyos-1.4-rolling-${KERNEL}-amd64.iso
