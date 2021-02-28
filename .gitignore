@@ -1,6 +1,9 @@
-.vagrant
-logs/*err
+.vagrant/
+ccache/
 build/*iso
 build/*deb
 build/*gz
+build/SHA256SUMS
 *log
+*err
+.DS_Store

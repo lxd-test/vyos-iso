@@ -12,5 +12,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", path: "scripts/provision.sh"
+  config.vm.provision "shell", path: "scripts/cache.sh"
   config.vm.provision "shell", path: "scripts/build.sh", privileged: false, run: "always"
 end

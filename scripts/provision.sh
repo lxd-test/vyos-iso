@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-exec 2>/vagrant/logs/provision.err
-
 export DEBIAN_FRONTEND=noninteractive
+
+# apt-cacher-ng
+apt-get update
+apt-get install -y apt-cacher-ng auto-apt-proxy
+
+mkdir -p /vagrant/logs/
+exec 2>/vagrant/logs/provision.err
 
 # Standard shell should be bash not dash
 echo "dash dash/sh boolean false" | debconf-set-selections && \
@@ -70,6 +75,7 @@ dpkg-reconfigure ca-certificates; \
       echo "cacert=/etc/ssl/certs/ca-certificates.crt" >> ~/.curlrc; \
     fi
 
+export OCAML_VERSION=4.12.0
 
 # Installing OCAML needed to compile libvyosconfig
 curl https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh \
@@ -84,7 +90,8 @@ eval $(opam env --root=/opt/opam --set-root) && opam install -y \
       num \
       ctypes.0.16.0 \
       ctypes-foreign \
-      ctypes-build
+      ctypes-build \
+      containers
 
 # Build VyConf which is required to build libvyosconfig
 eval $(opam env --root=/opt/opam --set-root) && \
@@ -463,6 +470,14 @@ apt-get update && apt-get install -y \
       autoconf \
       automake \
       libtool
+
+# Packages needed for wide-dhcpv6
+apt-get update && apt-get install -y \
+      bison \
+      debhelper \
+      flex \
+      libfl-dev \
+      rsync
 
 #
 # fpm: a command-line program designed to help you build packages (e.g. deb)
