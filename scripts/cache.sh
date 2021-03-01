@@ -3,18 +3,18 @@
 export DEBIAN_FRONTEND=noninteractive
 
 # apt-cacher-ng
-apt-get update
-apt-get install -y apt-cacher-ng auto-apt-proxy 
+sudo apt-get update
+sudo apt-get install -y apt-cacher-ng auto-apt-proxy 
 
 # ccache
 # Install package
 which ccache 2>/dev/null || {
-  apt-get update
-  apt-get install -y ccache
+  sudo apt-get update
+  sudo apt-get install -y ccache
 }
 
 # Update symlinks
-/usr/sbin/update-ccache-symlinks
+sudo /usr/sbin/update-ccache-symlinks
 
 # Prepend ccache into the PATH
 grep ccache ~/.bashrc 2>/dev/null || {
