@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p /vagrant/logs/
+mkdir -p /vagrant/logs/ /vagrant/build/
 exec 2>/vagrant/logs/build.err
 
 # update or clone vyos-build
