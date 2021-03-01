@@ -11,7 +11,10 @@ Vagrant.configure("2") do |config|
     v.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", "1000"]
   end
 
+  config.vm.synced_folder "apt-cacher-ng", "/var/cache/apt-cacher-ng", owner: "root",  group: "root",
+    mount_options: ["dmode=777,fmode=666"], create: "true"
+
   config.vm.provision "shell", path: "scripts/provision.sh"
-  config.vm.provision "shell", path: "scripts/cache.sh", privileged: false
+  config.vm.provision "shell", path: "scripts/cache.sh", privileged: false, run: "always"
   config.vm.provision "shell", path: "scripts/build.sh", privileged: false, run: "always"
 end

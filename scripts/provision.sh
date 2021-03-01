@@ -6,6 +6,12 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y apt-cacher-ng auto-apt-proxy
 
+sed -i -e 's/User=apt-cacher-ng/#User=apt-cacher-ng/g' -e 's/Group=apt-cacher-ng/#Group=apt-cacher-ng/g' /etc/systemd/system/multi-user.target.wants/apt-cacher-ng.service
+systemctl daemon-reload
+systemctl stop apt-cacher-ng
+systemctl start apt-cacher-ng
+
+
 mkdir -p /vagrant/logs/
 exec 2>/vagrant/logs/provision.err
 

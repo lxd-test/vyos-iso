@@ -6,6 +6,11 @@ export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
 sudo apt-get install -y apt-cacher-ng auto-apt-proxy 
 
+sudo sed -i -e 's/User=apt-cacher-ng/#User=apt-cacher-ng/g' -e 's/Group=apt-cacher-ng/#Group=apt-cacher-ng/g' /etc/systemd/system/multi-user.target.wants/apt-cacher-ng.service
+sudo systemctl daemon-reload
+sudo systemctl stop apt-cacher-ng
+sudo systemctl start apt-cacher-ng
+
 # ccache
 # Install package
 which ccache 2>/dev/null || {

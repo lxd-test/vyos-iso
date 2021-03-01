@@ -1,9 +1,7 @@
 .vagrant/
 ccache/
-build/*iso
-build/*deb
-build/*gz
-build/SHA256SUMS
+apt-cacher-ng/
+build/
 *log
 *err
 .DS_Store
